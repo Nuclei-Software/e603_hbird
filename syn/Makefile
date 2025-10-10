@@ -47,8 +47,8 @@ SYN_WITH_SRAM                    := 1
 TOPO_OPTS                        := 
 
 
-BUF_CELL                         := RVT_BUF_X8
-NAND_CELL                        := std_rvt_$(CORNER)/RVT_NAND2_X4
+BUF_CELL                         := RVT_BUF_X4
+NAND_CELL                        := std_rvt_$(CORNER)/RVT_NAND2_X1
 
 
 
@@ -66,7 +66,7 @@ VERDI_USE_ALL_LIB                := 1
 ORIGIN_FILELIST                  := ./origin_rtl.vf
 COMMON_VERDI_OPTS                := -sverilog -top $(TOP)  \
                                     +define+SYNTHESIS +define+SYNTHESIS +define+TECH_NUCLEI_DUMMY_RAM +define+TECH_NUCLEI_DUMMY_STD +define+TECH_NUCLEI_DUMMY_STD_10T \
-                                    +incdir+../../design/core+/home/zaixin/support/e603/syn/demo_syn_with_sram/memgen/wrapper
+                                    +incdir+../../design/core+./memgen/wrapper
 NOPG_VERDI_OPTS                  := 
 ifeq ($(VERDI_USE_ALL_LIB), 1)
     STD_LIB_VMOD                 := $(LIB_ROOT)/library/std_rvt/verilog/std_rvt.v \

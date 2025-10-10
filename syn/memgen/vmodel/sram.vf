@@ -1,0 +1,8 @@
+./memgen/vmodel/NUCLEI_SPRAM_128X16_MW16.v
+./memgen/vmodel/NUCLEI_SPRAM_32X140_MW140.v
+./memgen/vmodel/NUCLEI_SPRAM_256X22_MW1.v
+./memgen/vmodel/NUCLEI_SPRAM_2048X64_MW1.v
+./memgen/vmodel/NUCLEI_SPRAM_256X21_MW1.v
+./memgen/vmodel/NUCLEI_SPRAM_1024X32_MW4.v
+./memgen/vmodel/NUCLEI_SPRAM_128X40_MW1.v
+./memgen/vmodel/NUCLEI_SPRAM_128X27_MW1.v

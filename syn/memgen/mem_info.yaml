@@ -1,0 +1,73 @@
+spram:
+  128x16_mw16:
+    bmask: 'on'
+    aw: 7
+    dw: 16
+    mw: 16
+    clk: 1clk
+    port: sp
+    depth: 128
+    split_depth: null
+  32x140_mw140:
+    bmask: 'on'
+    aw: 5
+    dw: 140
+    mw: 140
+    clk: 1clk
+    port: sp
+    depth: 32
+    split_depth: null
+  256x22_mw1:
+    bmask: 'off'
+    aw: 8
+    dw: 22
+    mw: 1
+    clk: 1clk
+    port: sp
+    depth: 256
+    split_depth: null
+  2048x64_mw1:
+    bmask: 'off'
+    aw: 11
+    dw: 64
+    mw: 1
+    clk: 1clk
+    port: sp
+    depth: 2048
+    split_depth: null
+  256x21_mw1:
+    bmask: 'off'
+    aw: 8
+    dw: 21
+    mw: 1
+    clk: 1clk
+    port: sp
+    depth: 256
+    split_depth: null
+  1024x32_mw4:
+    bmask: 'on'
+    aw: 10
+    dw: 32
+    mw: 4
+    clk: 1clk
+    port: sp
+    depth: 1024
+    split_depth: null
+  128x40_mw1:
+    bmask: 'off'
+    aw: 7
+    dw: 40
+    mw: 1
+    clk: 1clk
+    port: sp
+    depth: 128
+    split_depth: null
+  128x27_mw1:
+    bmask: 'off'
+    aw: 7
+    dw: 27
+    mw: 1
+    clk: 1clk
+    port: sp
+    depth: 128
+    split_depth: null
