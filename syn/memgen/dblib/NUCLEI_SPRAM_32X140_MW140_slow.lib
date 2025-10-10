@@ -1,0 +1,487 @@
+
+library(NUCLEI_SPRAM_32X140_MW140_slow) {
+  delay_model         : table_lookup;                                                                                                                                                                                                                         
+  library_features(report_delay_calculation,report_power_calculation);
+
+  /* unit attributes */
+  time_unit           : "1ns";
+  voltage_unit        : "1V";
+  current_unit        : "1mA";
+  leakage_power_unit  : "1mW";
+  nom_process         : 1;
+  nom_temperature     : 125;
+  nom_voltage         : 0.81;
+  capacitive_load_unit(1,pf);
+  pulling_resistance_unit        : "1kohm";
+
+  /* default attributes */
+  default_fanout_load            : 1.000;
+  default_cell_leakage_power     : 0.000;
+  default_inout_pin_cap          : 0.005;
+  default_input_pin_cap          : 0.005;
+  default_output_pin_cap         : 0.000;
+
+  /* threshold definitions */
+  default_leakage_power_density  : 0.000;
+  slew_derate_from_library       : 0.500;
+  slew_lower_threshold_pct_fall  : 30.000;
+  slew_upper_threshold_pct_fall  : 70.000;
+  slew_lower_threshold_pct_rise  : 30.000;
+  slew_upper_threshold_pct_rise  : 70.000;
+  input_threshold_pct_fall       : 50.000;
+  input_threshold_pct_rise       : 50.000;
+  output_threshold_pct_fall      : 50.000;
+  output_threshold_pct_rise      : 50.000;
+
+  /* templates */ 
+  lu_table_template(nuclei_clockslew_outputload_delay_template) {
+    variable_1 : input_net_transition;
+    variable_2 : total_output_net_capacitance;
+    index_1 ("0.0001, 10");
+    index_2 ("0.0001, 10");
+  }
+  lu_table_template(nuclei_clockslew_outputload_retain_template) {
+    variable_1 : input_net_transition;
+    variable_2 : total_output_net_capacitance;
+    index_1 ("0.0001, 10");
+    index_2 ("0.0001, 10");
+  }
+  lu_table_template(nuclei_clockslew_outputload_slew_template) {
+    variable_1 : input_net_transition;
+    variable_2 : total_output_net_capacitance;
+    index_1 ("0.0001, 10");
+    index_2 ("0.0001, 10");
+  }
+  lu_table_template(nuclei_clockslew_inputslew_setuphold_template) {
+    variable_1 : related_pin_transition;
+    variable_2 : constrained_pin_transition;
+    index_1 ("0.0001, 10");
+    index_2 ("0.0001, 10");
+  }
+  lu_table_template(nuclei_cts1x2_clockslew_delay_template) {
+    variable_1 : input_net_transition;
+    index_1 ("0.0001, 10");
+  }
+  lu_table_template(nuclei_cts1x2_clockslew_slew_template) {
+    variable_1 : input_net_transition;
+    index_1 ("0.0001, 10");
+  }
+
+  /* operating-conditions */
+  operating_conditions(slow) {
+    process      : 1;
+    temperature  : 125;
+    voltage      : 0.81;
+    tree_type    : balanced_tree;
+  }
+  default_operating_conditions : slow;
+
+  /* wire-loads */
+  wire_load("sample") {
+    resistance   : 1.6e-05;
+    capacitance  : 0.0002;
+    area         : 1.7;
+    slope        : 500;
+    fanout_length(1,500);
+  }
+
+  
+  type (bus_Q) {
+    base_type : array ;
+    data_type : bit ;
+    bit_width : 140;
+    bit_from : 139;
+    bit_to : 0 ;
+    downto : true ;
+  }
+
+
+  type (bus_D) {
+    base_type : array ;
+    data_type : bit ;
+    bit_width : 140;
+    bit_from : 139;
+    bit_to : 0 ;
+    downto : true ;
+  }
+
+
+  type (bus_A) {
+    base_type : array ;
+    data_type : bit ;
+    bit_width : 5;
+    bit_from : 4;
+    bit_to : 0 ;
+    downto : true ;
+  }
+
+
+  type (bus_BWEN) {
+    base_type : array ;
+    data_type : bit ;
+    bit_width : 140;
+    bit_from : 139;
+    bit_to : 0 ;
+    downto : true ;
+  }
+
+  cell(NUCLEI_SPRAM_32X140_MW140) {
+    area : 0
+    dont_use : true;
+    dont_touch : true;
+    interface_timing : true;
+    is_memory_cell : true;
+    memory() {
+        type : ram;
+        address_width : 5;
+        word_width : 140;
+    }
+
+    pin(CLK) {
+      direction : input;
+      capacitance : 0.011090;
+      clock : true;
+      max_transition : 0.376000;
+      min_pulse_width_high : 0.196654;
+      min_pulse_width_low : 0.243716;
+      timing() {
+        timing_type : min_clock_tree_path;
+        timing_sense : positive_unate;
+        cell_rise(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        rise_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+        cell_fall(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        fall_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+      }
+      timing() {
+        timing_type : min_clock_tree_path;
+        timing_sense : negative_unate;
+        cell_fall(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        fall_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+        cell_rise(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        rise_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+      }
+      timing() {
+        timing_type : max_clock_tree_path;
+        timing_sense : positive_unate;
+        cell_rise(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        rise_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+        cell_fall(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        fall_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+      }
+      timing() {
+        timing_type : max_clock_tree_path;
+        timing_sense : negative_unate;
+        cell_fall(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        fall_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+        cell_rise(nuclei_cts1x2_clockslew_delay_template) {
+          values ("0.1, 0.1");
+        }
+        rise_transition(nuclei_cts1x2_clockslew_slew_template) {
+          values ("0.1, 0.1");
+        }
+      }
+    }
+
+
+    pin(CEN) {
+      direction : input;
+      capacitance : 0.005200;
+      max_transition : 0.753000;
+      timing() {
+        related_pin : CLK;
+        timing_type : setup_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+      }
+      timing() {
+        related_pin : CLK;
+        timing_type : hold_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+      }
+    }
+
+
+    pin(WEN) {
+      direction : input;
+      capacitance : 0.005200;
+      max_transition : 0.753000;
+      timing() {
+        related_pin : CLK;
+        timing_type : setup_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+      }
+      timing() {
+        related_pin : CLK;
+        timing_type : hold_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+      }
+    }
+
+
+bus(BWEN) {
+      bus_type : bus_BWEN;
+      direction : input;
+      
+      capacitance : 0.001813;
+      max_transition : 0.753000;
+      timing() {
+        related_pin : CLK;
+        timing_type : setup_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+      }
+      timing() {
+        related_pin : CLK;
+        timing_type : hold_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+      }
+    }
+
+
+bus(A) {
+      bus_type : bus_A;
+      direction : input;
+      
+      capacitance : 0.001813;
+      max_transition : 0.753000;
+      timing() {
+        related_pin : CLK;
+        timing_type : setup_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+      }
+      timing() {
+        related_pin : CLK;
+        timing_type : hold_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+      }
+    }
+
+
+bus(D) {
+      bus_type : bus_D;
+      direction : input;
+      
+      memory_write() {
+        address : A;
+        clocked_on : CLK;
+      }
+
+      capacitance : 0.001813;
+      max_transition : 0.753000;
+      timing() {
+        related_pin : CLK;
+        timing_type : setup_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.0725952, 0.0725952", \
+            "0.0725952, 0.0725952" \
+          );
+        }
+      }
+      timing() {
+        related_pin : CLK;
+        timing_type : hold_rising;
+        rise_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+        fall_constraint(nuclei_clockslew_inputslew_setuphold_template) {
+          values (\
+            "0.05, 0.05", \
+            "0.05, 0.05" \
+          );
+        }
+      }
+    }
+
+
+bus(Q) {
+      bus_type : bus_Q;
+      direction : output;
+      
+      memory_read() {
+        address : A;
+      }
+
+      max_capacitance : 0.3;
+      max_transition : 0.9;
+      timing() {
+        related_pin : CLK;
+        timing_type : rising_edge;
+        timing_sense : non_unate;
+        cell_rise(nuclei_clockslew_outputload_delay_template) {
+          values (\
+            "0.25196, 0.25196", \
+            "0.25196, 0.25196" \
+          );
+        }
+        retaining_rise(nuclei_clockslew_outputload_retain_template) {
+          values (\
+            "0.0, 0.0", \
+            "0.0, 0.0" \
+          );
+        }
+        rise_transition(nuclei_clockslew_outputload_slew_template) {
+          values (\
+            "0.1, 0.1", \
+            "0.1, 0.1" \
+          );
+        }
+        retain_rise_slew(nuclei_clockslew_outputload_slew_template) {
+          values (\
+            "0.1, 0.1", \
+            "0.1, 0.1" \
+          );
+        }
+        cell_fall(nuclei_clockslew_outputload_delay_template) {
+          values (\
+            "0.25196, 0.25196", \
+            "0.25196, 0.25196" \
+          );
+        }
+        retaining_fall(nuclei_clockslew_outputload_retain_template) {
+          values (\
+            "0.0, 0.0", \
+            "0.0, 0.0" \
+          );
+        }
+        fall_transition(nuclei_clockslew_outputload_slew_template) {
+          values (\
+            "0.1, 0.1", \
+            "0.1, 0.1" \
+          );
+        }
+        retain_fall_slew(nuclei_clockslew_outputload_slew_template) {
+          values (\
+            "0.1, 0.1", \
+            "0.1, 0.1" \
+          );
+        }
+      }
+    }
+
+
+}
+}
