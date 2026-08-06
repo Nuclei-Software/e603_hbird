@@ -78,11 +78,11 @@ endif
 # Build .mcs
 .PHONY: mcs
 mcs: install
-	time (RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) mcs)
+	time env RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) mcs
 	echo "mcsfile: $(INSTALL_DIR)/obj/$(MCSFILE_NAME)"
 
 only_mcs:
-	time (RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) only_mcs)
+	time env RTLVF=${INSTALL_RTLVF} make -C $(INSTALL_DIR) only_mcs
 
 
 rgs_mcs: $(RGS_MCS_CFG_LIST)
@@ -93,7 +93,7 @@ mcs_%:
 # Build .bit
 .PHONY: bit
 bit : install
-	time (RTLVF=${INSTALL_RTLVF} FPGA_CHIP_NAME=${FPGA_CHIP_NAME} make -C $(INSTALL_DIR) bit)
+	time env RTLVF=${INSTALL_RTLVF} FPGA_CHIP_NAME=${FPGA_CHIP_NAME} make -C $(INSTALL_DIR) bit
 	@echo "bitfile: $(INSTALL_DIR)/obj/$(BITFILE_NAME)"
 
 
@@ -110,11 +110,11 @@ setup:
 
 .PHONY: ela
 ela : install
-	time (RTLVF=${INSTALL_RTLVF} FPGA_CHIP_NAME=${FPGA_CHIP_NAME} make -C $(INSTALL_DIR) ela)
+	time env RTLVF=${INSTALL_RTLVF} FPGA_CHIP_NAME=${FPGA_CHIP_NAME} make -C $(INSTALL_DIR) ela
 
 .PHONY: syn
 syn : install
-	time (RTLVF=${INSTALL_RTLVF} FPGA_CHIP_NAME=${FPGA_CHIP_NAME} make -C $(INSTALL_DIR) syn)
+	time env RTLVF=${INSTALL_RTLVF} FPGA_CHIP_NAME=${FPGA_CHIP_NAME} make -C $(INSTALL_DIR) syn
 
 # Clean
 .PHONY: clean
