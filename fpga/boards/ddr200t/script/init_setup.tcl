@@ -43,4 +43,4 @@ set ip_include_dirs [concat $ip_include_dirs [findincludedir $srcdir "*.vh"]]
 
 read_ip [glob -directory $ipdir [file join * {*.xci}]]
 
-synth_design -include_dirs $env(INSTALL_RTL}/subsys/ -include_dirs $env{INSTALL_RTL}/core/ -top $top  -rtl
+synth_design -include_dirs $env(INSTALL_RTL)/subsys/ -include_dirs $env(INSTALL_RTL)/core/ -top $top -rtl
