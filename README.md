@@ -70,6 +70,10 @@ prebuilt
     └── freeloader.elf
 ```
 
+The prebuilt bitstream, Linux boot images, and Freeloader target a 50 MHz CPU.
+FPGA builds also generate a 50 MHz bitstream by default. To build the Linux
+image and Freeloader yourself, follow the [Nuclei Linux SDK Evalsoc README](https://github.com/Nuclei-Software/nuclei-linux-sdk/blob/dev_nuclei_6.6_v3_e603/conf/evalsoc/README.md).
+
 You need to prepare a DDR200T board and a Hummingbird Debugger Kit to get started.
 
 - [Nuclei DDR200T Evaluation Board](https://www.nucleisys.com/developboard.php#ddr200t)
