@@ -11,8 +11,15 @@ create_clock -add -name sys_clk_pin -period 30517.58 -waveform {0 15258.79} [get
 #set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets dut_io_pads_jtag_TCK_i_ival]
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets IOBUF_jtag_TCK/O]
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets dut/u_n600_subsys_top/u_n600_subsys_main/u_axi_ethernetlite_wrapper/U0/o]
-set_false_path -from [get_clocks -of_objects [get_pins ip_mmcm/inst/mmcm_adv_inst/CLKOUT1]] -to [get_clocks -of_objects [get_pins dut/u_n600_subsys_top/u_n600_subsys_main/u_mig7_n600/u_ddr3_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]]
-set_false_path -from [get_clocks -of_objects [get_pins dut/u_n600_subsys_top/u_n600_subsys_main/u_mig7_n600/u_ddr3_mig/u_ddr3_infrastructure/gen_mmcm.mmcm_i/CLKFBOUT]] -to [get_clocks -of_objects [get_pins ip_mmcm/inst/mmcm_adv_inst/CLKOUT1]]
+set sys_mmcm [get_cells -hier -filter {NAME =~ */ip_mmcm/* && REF_NAME == MMCME2_ADV}]
+set ddr_mmcm [get_cells -hier -filter {NAME =~ */u_ddr3_wrapper/* && REF_NAME == MMCME2_ADV}]
+if {[llength $sys_mmcm] != 1 || [llength $ddr_mmcm] != 1} {
+  error "Expected exactly one system MMCM and one DDR MMCM"
+}
+set sys_clk [get_clocks -of_objects [get_pins -of_objects $sys_mmcm -filter {REF_PIN_NAME == CLKOUT1}]]
+set ddr_clk [get_clocks -of_objects [get_pins -of_objects $ddr_mmcm -filter {REF_PIN_NAME == CLKFBOUT}]]
+set_false_path -from $sys_clk -to $ddr_clk
+set_false_path -from $ddr_clk -to $sys_clk
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets dut/u_n600_subsys_top/u_n600_subsys_main/u_n600_subsys_temac/u_axi_ethernetlite_wrapper/U0/o]
 
 
